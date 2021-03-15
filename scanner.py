@@ -23,31 +23,25 @@ def scanning(code):
         while True:
             try:
                 character = code_list[0]
-                print("\"", list(character), "\"")
                 current_state = dfa[current_state][character]
                 code_list.pop(0)
                 current_lexeme = current_lexeme + character
-                print("lexeme updated:", current_lexeme)
-                print(current_state)
-                print(current_state.isAccepting)
+                # print("lexeme updated:", current_lexeme)
                 if current_state.isAccepting:
                     last_accepting_state = copy.deepcopy(current_state)
                     last_accepting_lexeme = current_lexeme
+                    last_accepting_code_list = code_list.copy()
             except:
                 break
 
-        print(current_lexeme)
-        print(last_accepting_lexeme)
-        print(last_accepting_state)
-        print("Yes")
+        # print(current_lexeme)
+        # print(last_accepting_lexeme)
+        # print(last_accepting_state)
+        # print(code_list)
+        # print(last_accepting_code_list)
 
-        if last_accepting_lexeme == "" and last_accepting_state is None:
+        if last_accepting_lexeme == "" and last_accepting_state is None and character not in spaces:
             return (token_list, False) # returns token_list of work done, but error occurs (indicated by False)
-
-        if current_lexeme in reservedWords:
-            token_kind = reservedWords[current_lexeme]
-        else:
-            token_kind = last_accepting_state.tokenType
 
         if (character in spaces) or (character in line_terminators):
             code_list.pop(0)
@@ -59,7 +53,15 @@ def scanning(code):
             except:
                 pass
         
+        if current_lexeme in reservedWords:
+            token_kind = reservedWords[current_lexeme]
+        elif last_accepting_state is None:
+            continue
+        else:
+            token_kind = last_accepting_state.tokenType
+        
         token_list.append(Token(last_accepting_lexeme, token_kind))
+        code_list = last_accepting_code_list.copy()
     
     return (token_list, True)
 

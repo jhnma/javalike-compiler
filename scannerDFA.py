@@ -96,7 +96,7 @@ class Token:
         self.tokenType = tokenType
     
     def __repr__(self):
-        return self.lexeme
+        return "\"" + self.lexeme + "\""
         # return "Token <lexeme: \"%s\", tokenType: %s>" % (self.lexeme, self.tokenType)
     
     def __eq__(self, otherToken):
@@ -267,7 +267,7 @@ def getDfa():
             ".": node_dot1,
             ",": node_comma1,
             "\"": node_string1,
-            "'": node_char1,
+            "'": node_char1
         },
         node_7: { "=": node_8 },
         node_9: { "&": node_12, "=": node_8 },
