@@ -1,5 +1,4 @@
 from enum import Enum
-from lrparser import ParseTreeNode
 
 # Tokens are also all the terminals of the grammar
 class TokenKind(Enum):
@@ -133,6 +132,13 @@ class DfaNode:
     
     def __hash__(self):
         return hash((self.name, self.isAccepting, self.tokenType))
+
+class ParseTreeNode:
+    def isTerminal(self):
+        return False
+
+    def isNonTerminal(self):
+        return False
 
 class Token(ParseTreeNode):
     def __init__(self, lexeme, tokenType):

@@ -1,5 +1,5 @@
-from scannerDFA import TokenKind
 from parserDFA import NonTerminals, getProductionRules, getReduceDFA, getShiftDFA
+from scannerDFA import ParseTreeNode
 
 shift_dfa = getShiftDFA()
 reduce_dfa = getReduceDFA()
@@ -28,6 +28,9 @@ def parsing(tokens):
     # BOF keeps the state stack and node stack in the same length
     # EOF ($) keeps token unempty
     return (stack[1], True)
+
+# TODO: accept comments in parsing
+
 
 # Reduce(stack, a) := { A -> γ : exists β. α = βγ and βAa is V.P. }
 def reduce(stack, token):
@@ -60,19 +63,15 @@ def reject(inp):
             id = symbol.tokenType
         else:
             id = symbol.nonTerminal
+        
+        # print(id)
+
         try:
             current_state = shift_dfa[current_state][id]
         except:
             return True
     
     return False
-
-class ParseTreeNode:
-    def isTerminal(self):
-        return False
-
-    def isNonTerminal(self):
-        return False
 
 class NonTerminalNode(ParseTreeNode):
     def __init__(self, nonTerminal, children):
@@ -81,3 +80,6 @@ class NonTerminalNode(ParseTreeNode):
 
     def isNonTerminal(self):
         return True
+    
+    def __repr__(self):
+        return "NonTerminal <nonTerminalType: \"%s\", children: %s>" % (self.nonTerminal, self.children)
