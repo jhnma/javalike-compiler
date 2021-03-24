@@ -1,11 +1,8 @@
-from scannerDFA import TokenKind
-from scannerDFA import DfaNode
-from scannerDFA import Token
-from scannerDFA import getDfa
-from scannerDFA import getReservedWords
+from scannerDFA import TokenKind, DfaNode, Token, getDfa, getReservedWords, getOperatorMap
 import copy
 
-# Input: source code in ASCII string, Output: list of Tokens representing the input string
+# Input: source code in ASCII string
+# Output: list of Tokens representing the input string
 def scanning(code):
     dfa = getDfa()
     reservedWords = getReservedWords()
@@ -60,15 +57,22 @@ def scanning(code):
         else:
             token_kind = last_accepting_state.tokenType
         
-        token_list.append(Token(last_accepting_lexeme, token_kind))
+        token_list.append(convertOperators(Token(last_accepting_lexeme, token_kind)))
         code_list = last_accepting_code_list.copy()
     
     return (token_list, True)
 
+# Convert operators into more specific token types for parsing
+def convertOperators(token):
+    operatorMap = getOperatorMap()
+    if token.lexeme in operatorMap:
+        return Token(token.lexeme, operatorMap[token.lexeme])
+    else:
+        return Token(token.lexeme, token.tokenType)
+
 
 # Testing zone
-f = open("J1_01.java", "r")
-code = f.read()
-# print(list(code))
-tl = scanning(code)
-print(tl)
+# f = open("J1_01.java", "r")
+# code = f.read()
+# tl = scanning(code)
+# print(tl)

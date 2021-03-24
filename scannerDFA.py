@@ -1,4 +1,5 @@
 from enum import Enum
+from lrparser import ParseTreeNode
 
 # Tokens are also all the terminals of the grammar
 class TokenKind(Enum):
@@ -133,14 +134,14 @@ class DfaNode:
     def __hash__(self):
         return hash((self.name, self.isAccepting, self.tokenType))
 
-class Token:
+class Token(ParseTreeNode):
     def __init__(self, lexeme, tokenType):
         self.lexeme = lexeme
         self.tokenType = tokenType
     
     def __repr__(self):
-        return "\"" + self.lexeme + "\""
-        # return "Token <lexeme: \"%s\", tokenType: %s>" % (self.lexeme, self.tokenType)
+        # return "\"" + self.lexeme + "\""
+        return "Token <lexeme: \"%s\", tokenType: %s>" % (self.lexeme, self.tokenType)
     
     def __eq__(self, otherToken):
         if self.lexeme == otherToken.lexeme and self.tokenType == otherToken.tokenType:
@@ -150,6 +151,9 @@ class Token:
     
     def __hash__(self):
         return hash((self.lexeme, self.tokenType))
+    
+    def isTerminal(self):
+        return True
 
 def getDfa():
     node_start = DfaNode("start", False)
@@ -1624,3 +1628,44 @@ def getBOFToken():
 
 def getEOFToken():
     return Token("$", TokenKind.SPECIAL_PARSE_END_OF_INPUT)
+
+def getOperatorMap():
+    return {
+        "+": TokenKind.OPERATOR_PLUS,
+        "-": TokenKind.OPERATOR_MINUS,
+        "++": TokenKind.OPERATOR_2PLUS,
+        "--": TokenKind.OPERATOR_2MINUS,
+        "~": TokenKind.OPERATOR_TILDE,
+        "!": TokenKind.OPERATOR_EXCLAMATION,
+        "*": TokenKind.OPERATOR_ASTERISK,
+        "/": TokenKind.OPERATOR_SLASH,
+        "%": TokenKind.OPERATOR_PERCENT,
+        "<<": TokenKind.OPERATOR_SHIFT_LEFT,
+        ">>": TokenKind.OPERATOR_SHIFT_RIGHT,
+        ">>>": TokenKind.OPERATOR_SHIFT_RIGHT3,
+        "<": TokenKind.OPERATOR_LESS_THAN,
+        ">": TokenKind.OPERATOR_GREATER_THAN,
+        "<=": TokenKind.OPERATOR_LESS_THAN_EQUAL,
+        ">=": TokenKind.OPERATOR_GREATER_THAN_EQUAL,
+        "==": TokenKind.OPERATOR_EQUAL_CHECK,
+        "!=": TokenKind.OPERATOR_NOT_EQUAL,
+        "&": TokenKind.OPERATOR_AMPERSAND,
+        "^": TokenKind.OPERATOR_CIRCUMFLEX,
+        "|": TokenKind.OPERATOR_BITWISE_OR,
+        "&&": TokenKind.OPERATOR_LOGICAL_AND,
+        "||": TokenKind.OPERATOR_LOGICAL_OR,
+        "?": TokenKind.OPERATOR_QUESTION_MARK,
+        ":": TokenKind.OPERATOR_COLON,
+        "=": TokenKind.OPERATOR_EQUALS,
+        "*=": TokenKind.OPERATOR_TIMES_EQUALS,
+        "/=": TokenKind.OPERATOR_DIVIDES_EQUALS,
+        "%=": TokenKind.OPERATOR_PERCENT_EQUALS,
+        "+=": TokenKind.OPERATOR_PLUS_EQUALS,
+        "-=": TokenKind.OPERATOR_MINUS_EQUALS,
+        "<<=": TokenKind.OPERATOR_SHIFT_LEFT_EQUALS,
+        ">>=": TokenKind.OPERATOR_SHIFT_RIGHT_EQUALS,
+        ">>>=": TokenKind.OPERATOR_SHIFT_RIGHT3_EQUALS,
+        "&=": TokenKind.OPERATOR_AMPERSAND_EQUALS,
+        "^=": TokenKind.OPERATOR_CIRCUMFLEX_EQUALS,
+        "|=": TokenKind.OPERATOR_BITWISE_OR_EQUALS,
+    }
