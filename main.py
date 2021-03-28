@@ -1,6 +1,8 @@
-from scannerDFA import getBOFToken, getEOFToken
+#!/usr/bin/env python3
+from scannerDFA import getBOFToken, getEOFToken, TokenKind
 import scanner
 import lrparser
+import sys
 
 def main(fname = ""):
     try:
@@ -8,33 +10,33 @@ def main(fname = ""):
         code = f.read()
     except:
         print("File not found!")
-        return 42
+        sys.exit(42)
     
     tokenListTuple = scanner.scanning(code)
     
     # scanning unsuccessful
     if tokenListTuple[1] == False:
         print("Error during scanning!")
-        print("\".")
-        return 42
+        sys.exit(42)
     
     # Append BOF and EOF "$" symbol to list of tokens
     tokenList = [getBOFToken()] + tokenListTuple[0] + [getEOFToken()]
-    print(tokenList)
+    tokenList = list(filter(lambda x: x.tokenType != TokenKind.COMMENT, tokenList))
+    # print(tokenList)
     # print(tokenList[-1].tokenType)
 
     parsedTuple = lrparser.parsing(tokenList)
     if parsedTuple[1] == False:
         print("Error during parsing!")
-        print(parsedTuple[0])
-        return 42
+        # print(parsedTuple[0])
+        sys.exit(42)
     
     parseTreeRoot = parsedTuple[0]
-    print(parseTreeRoot)
+    # print(parseTreeRoot)
 
-    return 0
+    print("Program accepted.")
+    sys.exit(0)
 
 if __name__ == "__main__":
-    # fname = input()
-    fname = "J1_01.java"
+    fname = sys.argv[1]
     main(fname)

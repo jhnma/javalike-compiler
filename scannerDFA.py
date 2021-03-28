@@ -115,6 +115,9 @@ class TokenKind(Enum):
     OPERATOR_CIRCUMFLEX_EQUALS = 111
     OPERATOR_BITWISE_OR_EQUALS = 112
 
+    def __str__(self):
+        return self.name.lower()
+
 class DfaNode:
     def __init__(self, name, isAccepting, tokenType = None):
         self.name = name

@@ -15,6 +15,7 @@ def scanning(code):
         current_lexeme = ""
         last_accepting_state = None
         last_accepting_lexeme = ""
+        last_accepting_code_list = []
         current_state = DfaNode("start", False)
 
         while True:
@@ -27,7 +28,7 @@ def scanning(code):
                 if current_state.isAccepting:
                     last_accepting_state = copy.deepcopy(current_state)
                     last_accepting_lexeme = current_lexeme
-                    last_accepting_code_list = code_list.copy()
+                    last_accepting_code_list = code_list[:]
             except:
                 break
 
@@ -58,7 +59,7 @@ def scanning(code):
             token_kind = last_accepting_state.tokenType
         
         token_list.append(convertOperators(Token(last_accepting_lexeme, token_kind)))
-        code_list = last_accepting_code_list.copy()
+        code_list = last_accepting_code_list[:]
     
     return (token_list, True)
 

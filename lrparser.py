@@ -32,7 +32,7 @@ def parsing(tokens):
 # TODO: accept comments in parsing
 
 
-# Reduce(stack, a) := { A -> γ : exists β. α = βγ and βAa is V.P. }
+# Reduce(stack, a) := { A -> gamma : exists beta. alpha = [beta,gamma] and [beta,A,a] is V.P. }
 def reduce(stack, token):
     current_state = 0
 
@@ -54,7 +54,7 @@ def reduce(stack, token):
     else:
         return []
 
-# Reject(α) := ( α is not a V.P. )
+# Reject(a) := ( a is not a V.P. )
 def reject(inp):
     current_state = 0
 
@@ -82,4 +82,4 @@ class NonTerminalNode(ParseTreeNode):
         return True
     
     def __repr__(self):
-        return "NonTerminal <nonTerminalType: \"%s\", children: %s>" % (self.nonTerminal, self.children)
+        return "NonTerminal <nonTerminalType: \"%s\", children:\n\t%s>" % (self.nonTerminal, self.children)

@@ -3,6 +3,6 @@
 __pycache__/*
 helper_guidelines/*
 helper_scripts/*
-joosc.exe
-joosc.spec
+joosc
 build/*
+*.zip

@@ -141,6 +141,9 @@ class NonTerminals(Enum):
     CONSTANT_EXPRESSION = 248
     INTEGER_LITERAL = 249
 
+    def __str__(self):
+        return self.name
+
 def getProductionRules():
     # In the form of [(LHS :: NonTerminal, RHS :: [Symbol])]
     return [
@@ -420,6 +423,16 @@ def getProductionRules():
         (NonTerminals.EXPRESSION, [NonTerminals.ASSIGNMENT_EXPRESSION]),
         (NonTerminals.CONSTANT_EXPRESSION, [NonTerminals.EXPRESSION])
     ]
+
+def printProductionRules():
+    rules = getProductionRules()
+    s = ""
+    for rule in rules:
+        s += str(rule[0]) + " -> "
+        for d in rule[1]:
+            s += str(d) + ", "
+        s += "\n"
+    return s
 
 def getShiftDFA():
     return {
@@ -7576,3 +7589,9 @@ def getReduceDFA():
             TokenKind.KEYWORD_INSTANCEOF: 214,
         },
     }
+
+# Testing zone
+if __name__ == __main__:
+    f = open("prod-rules.txt", "w")
+    f.write(printProductionRules())
+    f.close()
