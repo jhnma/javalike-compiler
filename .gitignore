@@ -1,8 +1,10 @@
-*.java
+assignment_testcases*
+stdlib_versions/*
 .vscode/*
 __pycache__/*
 helper_guidelines/*
 helper_scripts/*
-joosc
 build/*
+small_testcases/*
+joosc
 *.zip
