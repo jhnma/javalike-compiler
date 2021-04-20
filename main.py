@@ -22,7 +22,7 @@ def main(fname = ""):
     # Append BOF and EOF "$" symbol to list of tokens
     tokenList = [getBOFToken()] + tokenListTuple[0] + [getEOFToken()]
     tokenList = list(filter(lambda x: x.tokenType != TokenKind.COMMENT, tokenList))
-    # print(tokenList)
+    print(tokenList)
     # print(tokenList[-1].tokenType)
 
     parsedTuple = lrparser.parsing(tokenList)
@@ -32,10 +32,17 @@ def main(fname = ""):
         sys.exit(42)
     
     parseTreeRoot = parsedTuple[0]
-    # print(parseTreeRoot)
+    recursivePrintParseTree(parseTreeRoot)
 
     print("Program accepted.")
     sys.exit(0)
+
+def recursivePrintParseTree(rootNode, ident_level = 0):
+    print(" " * ident_level, end = "")
+    print(rootNode)
+    if rootNode.isNonTerminal():
+        for child in rootNode.children:
+            recursivePrintParseTree(child, ident_level + 1)
 
 if __name__ == "__main__":
     fname = sys.argv[1]

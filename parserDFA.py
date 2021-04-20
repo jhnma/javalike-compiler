@@ -427,10 +427,11 @@ def getProductionRules():
 def printProductionRules():
     rules = getProductionRules()
     s = ""
-    for rule in rules:
+    for rule in sorted(rules, key = lambda x: str(x[0])):
         s += str(rule[0]) + " -> "
-        for d in rule[1]:
-            s += str(d) + ", "
+        for d in range(len(rule[1])):
+            s += str(rule[1][d])
+            if d != len(rule[1]) - 1: s += ", "
         s += "\n"
     return s
 
@@ -7591,7 +7592,7 @@ def getReduceDFA():
     }
 
 # Testing zone
-if __name__ == __main__:
+if __name__ == "__main__":
     f = open("prod-rules.txt", "w")
     f.write(printProductionRules())
     f.close()

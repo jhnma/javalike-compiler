@@ -82,4 +82,16 @@ class NonTerminalNode(ParseTreeNode):
         return True
     
     def __repr__(self):
-        return "NonTerminal <nonTerminalType: \"%s\", children:\n\t%s>" % (self.nonTerminal, self.children)
+        return "NonTerminal <nonTerminalType: \"%s\", children: %s>" % (self.nonTerminal, list(map(printTreeChildren, self.children)))
+    
+    def hasChildrenType(self, nonTerminalType):
+        return nonTerminalType in list(map(lambda x: x.nonTerminal, self.children))
+
+    def getChildrenOfType(self, nonTerminalType):
+        return list(filter(lambda x: x.nonTerminal == nonTerminalType, self.children))
+
+def printTreeChildren(child):
+    if child.isTerminal():
+        return str(child.tokenType)
+    else:
+        return str(child.nonTerminal)
